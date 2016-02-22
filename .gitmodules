@@ -1,12 +1,12 @@
 [submodule "src/lib/concurrentBuffers"]
-	path = src/lib/concurrentBuffers
+	path = external/concurrentBuffers
 	url = https://github.com/skrogh/concurrentBuffers.git
 [submodule "src/lib/msf_ekf"]
-	path = src/lib/msf_ekf
+	path = external/msf_ekf
 	url = https://github.com/skrogh/msf_ekf.git
 [submodule "src/lib/imuDriver"]
-	path = src/lib/imuDriver
+	path = external/imuDriver
 	url = https://github.com/skrogh/imuDriver.git
 [submodule "src/lib/lsd_slam"]
-	path = src/lib/lsd_slam
+	path = external/lsd_slam
 	url = https://github.com/skrogh/lsd_slam.git
