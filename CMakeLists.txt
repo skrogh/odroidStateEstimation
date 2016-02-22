@@ -7,7 +7,9 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 set(CMAKE_MODULE_PATH   ${PROJECT_SOURCE_DIR}/cmake ${CMAKE_MODULE_PATH})
 
 find_package(Eigen3 REQUIRED)
-find_package(Boost REQUIRED COMPONENTS thread system chrono)
+find_package(SuiteParse REQUIRED) # Apparently needed by g2o
+find_package(OpenCV REQUIRED COMPONENTS core highgui imgproc calib3d)
+find_package(Boost REQUIRED COMPONENTS thread system)
 
 find_library(imu_lib NAMES imu_lib REQUIRED
 	PATHS ${PROJECT_SOURCE_DIR}/external/imuDriver/lib
@@ -17,8 +19,8 @@ find_library(imu_lib NAMES ekf_lib REQUIRED
 	PATHS ${PROJECT_SOURCE_DIR}/external/msf_ekf/lib
 )
 
-find_library(imu_lib NAMES ekf_lib REQUIRED
-	PATHS ${PROJECT_SOURCE_DIR}/external/msf_ekf/lib
+find_library(imu_lib NAMES lsdslam REQUIRED
+	PATHS ${PROJECT_SOURCE_DIR}/external/lsd_slam/lsd_slam_core/lib
 )
 
 
@@ -47,5 +49,5 @@ include_directories(
 
 # build test program
 add_executable(main_test src/test/main_test.cpp)
-#target_link_libraries(main_test imu_lib ekf_lib lsd_lib)
+#target_link_libraries(main_test ${imu_lib} ${ekf_lib} ${lsdslam} ${FABMAP_LIB} g2o_core g2o_stuff cxsparse g2o_solver_csparse g2o_csparse_extension g2o_types_sim3 g2o_types_sba ${Boost_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(main_test ${imu_lib} ${Boost_LIBRARIES})
