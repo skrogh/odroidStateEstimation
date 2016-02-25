@@ -15,11 +15,11 @@ find_library(imu_lib NAMES imu_lib REQUIRED
 	PATHS ${PROJECT_SOURCE_DIR}/external/imuDriver/lib
 )
 
-find_library(imu_lib NAMES ekf_lib REQUIRED
+find_library(ekf_lib NAMES ekf_lib REQUIRED
 	PATHS ${PROJECT_SOURCE_DIR}/external/msf_ekf/lib
 )
 
-find_library(imu_lib NAMES lsdslam REQUIRED
+find_library(lsdslam NAMES lsdslam REQUIRED
 	PATHS ${PROJECT_SOURCE_DIR}/external/lsd_slam/lsd_slam_core/lib
 )
 
@@ -40,10 +40,19 @@ set(CMAKE_CXX_FLAGS
    "${CMAKE_CXX_FLAGS} -O2 -march=native -mfpu=neon -std=c++0x"
 ) 
 
+set(LSD_DIR ${PROJECT_SOURCE_DIR}/external/lsd_slam/lsd_slam_core)
+set(IMU_DIR ${PROJECT_SOURCE_DIR}/external/imuDriver)
+set(MSF_DIR ${PROJECT_SOURCE_DIR}/external/msf_ekf)
+set(BUFS_DIR ${PROJECT_SOURCE_DIR}/external/concurrentBuffers)
+
 include_directories(
   ${EIGEN3_INCLUDE_DIR}
   ${PROJECT_SOURCE_DIR}/src
-  ${PROJECT_SOURCE_DIR}/external
+  ${LSD_DIR}/thirdparty/Sophus
+  ${LSD_DIR}/src
+  ${IMU_DIR}/src
+  ${MSF_DIR}/src
+  ${BUFS_DIR}/src
  )
 
 
