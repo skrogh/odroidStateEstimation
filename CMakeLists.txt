@@ -49,5 +49,5 @@ include_directories(
 
 # build test program
 add_executable(main_test src/test/main_test.cpp)
-#target_link_libraries(main_test ${imu_lib} ${ekf_lib} ${lsdslam} ${FABMAP_LIB} g2o_core g2o_stuff cxsparse g2o_solver_csparse g2o_csparse_extension g2o_types_sim3 g2o_types_sba ${Boost_LIBRARIES} ${OpenCV_LIBRARIES})
-target_link_libraries(main_test ${imu_lib} ${Boost_LIBRARIES})
+target_link_libraries(main_test ${imu_lib} ${ekf_lib} ${lsdslam} ${FABMAP_LIB} g2o_core g2o_stuff cxsparse g2o_solver_csparse g2o_csparse_extension g2o_types_sim3 g2o_types_sba ${Boost_LIBRARIES} ${OpenCV_LIBRARIES})
+#target_link_libraries(main_test ${imu_lib} ${Boost_LIBRARIES})
