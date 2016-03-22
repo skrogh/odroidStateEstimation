@@ -56,6 +56,7 @@ main( int argc, char** argv )
 		imuDriver.imuBuffer.popBlocking(imuData);
 		imuFile << imuData.gyro[0] << " " << imuData.gyro[1] << " " << imuData.gyro[2] << " "
 		<< imuData.acc[0] << " " << imuData.acc[1] << " " << imuData.acc[2] << " "
+		<< imuData.dist << " " << imuData.distValid << " "
 		<< std::chrono::duration_cast<std::chrono::nanoseconds>(imuData.timeStamp.time_since_epoch()).count()
 		<< std::endl;
 	}

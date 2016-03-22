@@ -75,9 +75,9 @@ void MsfOutput3DWrapper::publishTrackedFrame(Frame* f)
 	R.diagonal()[0] = 0.01*0.01;
 	R.diagonal()[1] = 0.01*0.01;
 	R.diagonal()[2] = 0.01*0.01;
-	R.diagonal()[3] = 0.01;
-	R.diagonal()[4] = 0.01;
-	R.diagonal()[5] = 0.01;
+	R.diagonal()[3] = 0.1*0.1;
+	R.diagonal()[4] = 0.1*0.1;
+	R.diagonal()[5] = 0.05*0.05;
 
 	Sim3 camToWorld = f->getScaledCamToWorld();
 	output->CameraMeasurement(

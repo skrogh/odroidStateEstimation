@@ -46,24 +46,24 @@ main( int argc, char** argv )
 			Eigen::Vector3d(0,0,0),				// b_omega
 			Eigen::Vector3d(0,0,0),				// b_a
 			log(1),								// lambda
-			Eigen::Vector3d(0.045, 0, -0.05),// p_c_i
-			Eigen::Quaterniond(0,1,1,0),		// q_c_i
+			Eigen::Vector3d(0.05, 0, -0.04),// p_c_i
+			Eigen::Quaterniond(0.3549, 0.6116, -0.6116, 0.3549),		// q_c_i
 			Eigen::Vector3d(0,0,0),				// p_w_v
 			Eigen::Quaterniond(1,0,0,0));		// q_w_v
-	estimator.SetCalibration(0.01/400,			// sq_sigma_omega
-			0.05/400,							// sq_sigma_a
-			0.01/400,							// sq_sigma_b_omega
-			0.01/400,							// sq_sigma_a_omega
+	estimator.SetCalibration(0.02*0.02,			// sq_sigma_omega
+			0.05*0.05,								// sq_sigma_a
+			0.001*0.001,							// sq_sigma_b_omega
+			0.001*0.001,							// sq_sigma_a_omega
 			1/400.0,							// Delta_t
 			Eigen::Vector3d(0,0,9.82),			// g
 			0,									// noise of scaling for new KFs
 			true);								// measurements are absolute (in contrast to incremental)
 	Eigen::Matrix<double,28,1> P;
 	P << 0, 0, 0,								// p_i_w
-		0, 0, 0,								// v_i_w
+		0.2, 0.2, 0.2,								// v_i_w
 		0.3, 0.3, 0,							// q_i_w
-		0.5, 0.5, 0.5,							// b_omega
-		1, 1, 1,								// b_a
+		0.01, 0.01, 0.01,							// b_omega
+		0.01, 0.01, 0.01,								// b_a
 		log(1),									// lambda
 		0.005, 0.005, 0.005,					// p_c_i
 		0.05, 0.05, 0.05,						// q_c_i
@@ -100,8 +100,9 @@ main( int argc, char** argv )
 			std::chrono::duration_cast<std::chrono::nanoseconds>(imuData.timeStamp.time_since_epoch()).count()
 			);
 		static int i = 0;
-		//if (i++%100==0)
-		//	std::cout << "State:\n" << estimator.estimatorPredictorCurrent.p_i_w.transpose() << std::endl;
+		if (i++%100==0)
+		{
+		}
 
 	}
 
