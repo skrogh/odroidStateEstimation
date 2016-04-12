@@ -21,12 +21,15 @@
 #include "MsfOutput3DWrapper.h"
 #include "util/settings.h"
 #include "util/SophusUtil.h"
+#include "util/globalFuncs.h"
 #include "EstimatorDelayHider.h"
 
 #include "DataStructures/Frame.h"
 #include "GlobalMapping/KeyFrameGraph.h"
 #include "sophus/sim3.hpp"
 #include "GlobalMapping/g2oTypeSim3Sophus.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 
 #include <boost/thread.hpp>
 #include <Eigen/Core>
@@ -45,6 +48,9 @@ MsfOutput3DWrapper::MsfOutput3DWrapper(int width, int height, ekf::EstimatorDela
 	this->width = width;
 	this->height = height;
 	this->output = output;
+	outputVideo.open("KeyFrames.mpeg", cv::VideoWriter::fourcc('P','I','M','1'),30,cv::Size(width,height));
+	outputVideoVar.open("KeyFramesVar.mpeg", cv::VideoWriter::fourcc('P','I','M','1'),30,cv::Size(width,height));
+	outputVideoCombi.open("KeyFramesCombi.mpeg", cv::VideoWriter::fourcc('P','I','M','1'),30,cv::Size(width,height));
 }
 
 MsfOutput3DWrapper::~MsfOutput3DWrapper()
@@ -55,7 +61,18 @@ MsfOutput3DWrapper::~MsfOutput3DWrapper()
 
 void MsfOutput3DWrapper::publishKeyframe(Frame* f)
 {
-	// unimplemented (look at parrent for current frame)
+	// Debug print, but pass no data to kalmanfilter
+	cv::Mat img;
+	cv::Mat imgVar;
+	{
+		boost::shared_lock<boost::shared_mutex> lock = f->getActiveLock();
+		img = getDepthRainbowPlot(f);
+		imgVar = getVarRedGreenPlot( f->idepthVar(), f->image(), f->width(), f->height());
+	}	
+	outputVideo << img;
+	outputVideoVar << imgVar;
+	outputVideoCombi << img;
+	outputVideoCombi << imgVar;
 }
 
 void MsfOutput3DWrapper::publishTrackedFrame(Frame* f)
@@ -65,7 +82,10 @@ void MsfOutput3DWrapper::publishTrackedFrame(Frame* f)
 	bool isNewKeyframe = false;
 	if (f->pose->trackingParent!=nullptr)
 	{
-		Eigen::Vector3d keyframeToWorld = f->pose->trackingParent->getCamToWorld().translation();
+		Frame* parent = f->pose->trackingParent->frame;
+		boost::shared_lock<boost::shared_mutex> parentLock = parent->getActiveLock();
+
+		Eigen::Vector3d keyframeToWorld = parent->pose->getCamToWorld().translation();
 		if (keyframeToWorldPrevious != keyframeToWorld)
 			isNewKeyframe = true;
 		keyframeToWorldPrevious = keyframeToWorld;

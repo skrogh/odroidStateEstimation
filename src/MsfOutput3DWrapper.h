@@ -22,6 +22,8 @@
 
 #include "IOWrapper/Output3DWrapper.h"
 #include "EstimatorDelayHider.h"
+#include <opencv2/highgui/highgui.hpp>
+#include <opencv2/imgproc/imgproc.hpp>
 #include <fstream>
 
 
@@ -63,5 +65,8 @@ private:
 	int width, height;
 	ekf::EstimatorDelayHider* output;
 	Eigen::Vector3d keyframeToWorldPrevious;
+	cv::VideoWriter outputVideo; 
+	cv::VideoWriter outputVideoVar; 
+	cv::VideoWriter outputVideoCombi; 
 };
 }
